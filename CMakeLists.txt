@@ -9,8 +9,6 @@ find_package(PkgConfig REQUIRED)
 find_package(Boost REQUIRED COMPONENTS)
 
 find_package(Bullet REQUIRED)
-include_directories(${BULLET_INCLUDE_DIRS})
-link_directories(${BULLET_LIBRARY_DIRS})
 
 find_package( PCL REQUIRED )
 add_definitions(${PCL_DEFINITIONS})
@@ -58,7 +56,11 @@ catkin_package(
 )
 
 #common commands for building c++ executables and libraries
-add_library(robot_geometric_shapes src/load_mesh.cpp src/shapes.cpp src/bodies.cpp)
+add_library(robot_geometric_shapes
+ src/load_mesh.cpp
+ src/shapes.cpp
+ src/bodies.cpp
+)
 
 add_library(${PROJECT_NAME} src/self_mask.cpp)
 target_link_libraries(${PROJECT_NAME} robot_geometric_shapes assimp)
@@ -72,8 +74,15 @@ add_executable(self_filter src/self_filter.cpp)
 target_link_libraries(self_filter ${PROJECT_NAME})
 target_link_libraries(self_filter robot_geometric_shapes  assimp)
 
-include_directories(include ${bullet_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS} ${TinyXML_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
-target_link_libraries(robot_geometric_shapes ${bullet_LIBRARIES} ${Boost_LIBRARIES} ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES} assimp)
+include_directories(include ${BULLET_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS} ${TinyXML_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
+target_link_libraries(robot_geometric_shapes
+ ${BULLET_LIBRARIES}
+ ${Boost_LIBRARIES}
+ ${PCL_LIBRARIES}
+ ${catkin_LIBRARIES} 
+ ${TinyXML_LIBRARIES}
+ assimp
+)
 
 
 install(DIRECTORY include/${PROJECT_NAME}/
