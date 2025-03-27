@@ -2,12 +2,15 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(robot_self_filter)
 
+add_compile_options(-Wno-shadow)
+
 find_package(PkgConfig REQUIRED)
 
 find_package(Boost REQUIRED COMPONENTS)
 
-set(bullet_FOUND 0)
-pkg_check_modules(bullet REQUIRED bullet)
+find_package(Bullet REQUIRED)
+include_directories(${BULLET_INCLUDE_DIRS})
+link_directories(${BULLET_LIBRARY_DIRS})
 
 find_package( PCL REQUIRED )
 add_definitions(${PCL_DEFINITIONS})
